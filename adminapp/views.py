@@ -15,14 +15,21 @@ def home(request):
     return HttpResponse('KKKKKKK')
 @api_view(['POST'])
 def loginview(request):
-    serialiser = loginserializer(data=request.data)
-    if serialiser.is_valid():
-            user = authenticate(username = request.data.get('username'),password = request.data.get('password'))
-            #user = CustomUser.objects.create_user(username = request.data.get('username'),password = request.data.get('password'))
-            if user:
-                 
-                #token = Token.objects.get(user=user)
-                #print(token)
-                return JsonResponse({"Token":"success"})
+    serializer = loginserializer(data=request.data)
+    if serializer.is_valid():
+        user = authenticate(username=request.data.get('username'), password=request.data.get('password'))
+        if user:
+            user_type = user.user_type
+            if user_type == '1':
+                role = 'admin'
+            elif user_type == '2':
+                role = 'user'
+            elif user_type == '3':
+                role = 'moderator'
             else:
-                return Response(serialiser.errors)
+                role = 'unknown'
+            return JsonResponse({"status": "success", "role": role})
+        else:
+            return JsonResponse({"status": "failure", "error": "Invalid username or password"}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid data'}, status=400)

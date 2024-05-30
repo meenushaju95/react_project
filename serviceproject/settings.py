@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'adminapp',
     'rest_framework',
-    'corsheaders',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -51,15 +51,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         
     ]
+      
 }
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+     
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -100,6 +102,7 @@ DATABASES = {
     } 
 
 }
+
 CORS_ORIGIN_ALLOW_ALL = True
 #CORS_ORIGIN_WHITELIST = [
 #    "http://http://localhost:3000"
